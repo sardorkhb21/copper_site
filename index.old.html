@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copper POS — Restoranlar uchun aqlli kassa tizimi</title>
+<meta name="description" content="Copper POS — kafe va restoranlar uchun bulutli kassa tizimi. Buyurtmalar, oshxona, hisobotlar va foyda — hammasi bitta tizimda. O'zbekistonda ishlab chiqilgan.">
+<meta property="og:title" content="Copper POS — Restoranlar uchun aqlli kassa tizimi">
+<meta property="og:description" content="Buyurtmalar, oshxona, hisobotlar va foyda — hammasi bitta tizimda.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230E9F6E'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-size='36' font-weight='800' fill='white' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --emerald: #0E9F6E;
+    --emerald-dark: #0B7F58;
+    --ink: #111418;
+    --grey: #6B7280;
+    --line: #EAECEF;
+    --bg: #F6F7F9;
+    --amber: #B7791F;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    background: #fff;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3 { line-height: 1.25; }
+  section { padding: 72px 0; }
+  .muted { color: var(--grey); }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; align-items: center; gap: 24px; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; text-decoration: none; color: var(--ink); }
+  .logo-badge {
+    width: 34px; height: 34px; border-radius: 9px; background: var(--emerald);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 19px;
+  }
+  .nav-links { display: flex; gap: 22px; margin-left: auto; }
+  .nav-links a { color: var(--grey); text-decoration: none; font-size: 14.5px; font-weight: 600; }
+  .nav-links a:hover { color: var(--ink); }
+  .lang-btn {
+    border: 1px solid var(--line); background: #fff; border-radius: 8px;
+    padding: 6px 12px; font-size: 13px; font-weight: 700; cursor: pointer; color: var(--grey);
+  }
+  .btn {
+    display: inline-block; background: var(--emerald); color: #fff; text-decoration: none;
+    padding: 12px 22px; border-radius: 10px; font-weight: 700; font-size: 15px;
+    border: none; cursor: pointer; transition: background .15s;
+  }
+  .btn:hover { background: var(--emerald-dark); }
+  .btn.small { padding: 9px 16px; font-size: 14px; }
+  .btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+  .btn.ghost:hover { background: var(--bg); }
+  .hamburger { display: none; background: none; border: none; font-size: 26px; cursor: pointer; margin-left: auto; }
+
+  /* ── Hero ── */
+  .hero { padding: 88px 0 64px; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: center; }
+  .hero h1 { font-size: 44px; font-weight: 800; letter-spacing: -.5px; }
+  .hero h1 em { color: var(--emerald); font-style: normal; }
+  .hero p { margin: 18px 0 28px; font-size: 18px; color: var(--grey); }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .made-in { margin-top: 22px; font-size: 13.5px; color: var(--grey); }
+
+  /* mock device */
+  .mock {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 24px;
+    padding: 22px; box-shadow: 0 24px 60px rgba(17,20,24,.08);
+  }
+  .mock-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .mock-title { font-weight: 800; font-size: 15px; }
+  .chip { background: rgba(14,159,110,.12); color: var(--emerald); font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+  .mock-rev { background: var(--emerald); color: #fff; border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+  .mock-rev .lbl { font-size: 12px; opacity: .85; }
+  .mock-rev .val { font-size: 26px; font-weight: 800; }
+  .mock-row { display: flex; gap: 10px; }
+  .mock-cell { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+  .mock-cell .lbl { font-size: 11.5px; color: var(--grey); }
+  .mock-cell .val { font-size: 16px; font-weight: 800; }
+
+  /* ── Stats ── */
+  .stats { background: var(--bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 36px 0; }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center; }
+  .stat .n { font-size: 26px; font-weight: 800; color: var(--emerald); }
+  .stat .t { font-size: 14px; color: var(--grey); }
+
+  /* ── Features ── */
+  .sec-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
+  .sec-head h2 { font-size: 32px; font-weight: 800; }
+  .sec-head p { margin-top: 10px; color: var(--grey); font-size: 16.5px; }
+  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feat {
+    border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+    transition: box-shadow .15s, transform .15s;
+  }
+  .feat:hover { box-shadow: 0 12px 32px rgba(17,20,24,.07); transform: translateY(-2px); }
+  .feat .ico {
+    width: 44px; height: 44px; border-radius: 12px; background: rgba(14,159,110,.1);
+    display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 14px;
+  }
+  .feat h3 { font-size: 16.5px; margin-bottom: 6px; }
+  .feat p { font-size: 14px; color: var(--grey); }
+
+  /* ── Apps ── */
+  .apps { background: var(--bg); }
+  .apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .app-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 28px; }
+  .app-card .tag { font-size: 12px; font-weight: 700; color: var(--emerald); text-transform: uppercase; letter-spacing: .5px; }
+  .app-card h3 { font-size: 21px; margin: 8px 0 10px; }
+  .app-card p { font-size: 14.5px; color: var(--grey); }
+  .app-card ul { margin: 14px 0 0 18px; font-size: 14px; color: var(--grey); }
+
+  /* ── Pricing ── */
+  .toggle-row { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 34px; font-size: 14.5px; font-weight: 600; }
+  .switch { position: relative; width: 46px; height: 26px; background: var(--line); border-radius: 20px; cursor: pointer; border: none; }
+  .switch::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+    background: #fff; border-radius: 50%; transition: left .18s; box-shadow: 0 1px 4px rgba(0,0,0,.2);
+  }
+  .switch.on { background: var(--emerald); }
+  .switch.on::after { left: 23px; }
+  .save-chip { background: rgba(183,121,31,.12); color: var(--amber); padding: 3px 10px; border-radius: 20px; font-size: 12.5px; font-weight: 700; }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: stretch; }
+  .plan { border: 1px solid var(--line); border-radius: 18px; padding: 28px; display: flex; flex-direction: column; }
+  .plan.hot { border: 2px solid var(--emerald); position: relative; }
+  .plan .best {
+    position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    background: var(--emerald); color: #fff; font-size: 12px; font-weight: 700;
+    padding: 3px 14px; border-radius: 20px; white-space: nowrap;
+  }
+  .plan h3 { font-size: 18px; }
+  .plan .price { font-size: 30px; font-weight: 800; margin: 12px 0 2px; }
+  .plan .per { font-size: 13px; color: var(--grey); margin-bottom: 16px; }
+  .plan ul { list-style: none; margin-bottom: 22px; flex: 1; }
+  .plan li { font-size: 14px; padding: 7px 0; border-bottom: 1px dashed var(--line); color: var(--ink); }
+  .plan li::before { content: "✓  "; color: var(--emerald); font-weight: 800; }
+  .plan .btn { text-align: center; }
+  .trial-note { text-align: center; margin-top: 22px; font-size: 14px; color: var(--grey); }
+
+  /* ── Testimonial ── */
+  .testi { background: var(--bg); }
+  .quote {
+    max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid var(--line);
+    border-radius: 18px; padding: 34px; text-align: center;
+  }
+  .quote p { font-size: 18px; font-weight: 500; }
+  .quote .who { margin-top: 16px; font-size: 14px; color: var(--grey); }
+
+  /* ── Founder ── */
+  .founder-card {
+    max-width: 640px; margin: 0 auto; display: flex; gap: 24px; align-items: center;
+    border: 1px solid var(--line); border-radius: 18px; padding: 30px;
+  }
+  .avatar {
+    width: 92px; height: 92px; border-radius: 50%; background: var(--emerald);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 32px; font-weight: 800; flex-shrink: 0;
+  }
+  .founder-card h3 { font-size: 20px; }
+  .founder-card .role { color: var(--emerald); font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .founder-card p { font-size: 14.5px; color: var(--grey); }
+
+  /* ── FAQ ── */
+  .faq-list { max-width: 720px; margin: 0 auto; }
+  details {
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 10px;
+  }
+  summary { cursor: pointer; font-weight: 700; font-size: 15.5px; list-style: none; display: flex; justify-content: space-between; }
+  summary::after { content: "+"; color: var(--emerald); font-size: 20px; font-weight: 800; }
+  details[open] summary::after { content: "–"; }
+  details p { margin-top: 10px; font-size: 14.5px; color: var(--grey); }
+
+  /* ── Contact ── */
+  .contact { text-align: center; background: var(--emerald); color: #fff; border-radius: 24px; padding: 56px 28px; }
+  .contact h2 { font-size: 30px; font-weight: 800; }
+  .contact p { margin: 12px 0 26px; opacity: .9; }
+  .contact .btn { background: #fff; color: var(--emerald); }
+  .contact .btn:hover { background: #f0fdf7; }
+  .contact .alt { margin-top: 18px; font-size: 14.5px; opacity: .95; }
+  .contact a.plain { color: #fff; font-weight: 700; }
+
+  footer { padding: 34px 0; border-top: 1px solid var(--line); margin-top: 72px; }
+  .foot { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--grey); flex-wrap: wrap; gap: 10px; }
+
+  /* fade-in */
+  .fade { opacity: 0; transform: translateY(14px); transition: opacity .5s, transform .5s; }
+  .fade.vis { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .apps-grid { grid-template-columns: 1fr; }
+    .feat-grid, .price-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 32px; }
+    .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0;
+      background: #fff; border-bottom: 1px solid var(--line); flex-direction: column;
+      padding: 16px 20px; gap: 14px; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: block; }
+    .stats-grid { grid-template-columns: 1fr; gap: 14px; }
+    .founder-card { flex-direction: column; text-align: center; }
+    section { padding: 52px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top"><span class="logo-badge">C</span> Copper</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <div class="nav-links">
+      <a href="#features" data-i18n="nav_features">Imkoniyatlar</a>
+      <a href="#apps" data-i18n="nav_apps">Ilovalar</a>
+      <a href="#pricing" data-i18n="nav_pricing">Narxlar</a>
+      <a href="#faq" data-i18n="nav_faq">Savollar</a>
+      <a href="#contact" data-i18n="nav_contact">Bog'lanish</a>
+    </div>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+    <a class="btn small" href="#contact" data-i18n="nav_cta">Demo olish</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <h1 data-i18n-html="hero_h1">Restoraningiz uchun <em>aqlli kassa</em> tizimi</h1>
+      <p data-i18n="hero_p">Buyurtmalar, stollar, oshxona, hisobotlar va foyda — hammasi bitta tizimda.
+      Oddiy Android planshet va telefonlarda ishlaydi. Bir kunda o'rnatiladi.</p>
+      <div class="hero-ctas">
+        <!-- TODO: replace with real Telegram username -->
+        <a class="btn" href="https://t.me/copperpos_uz" target="_blank" data-i18n="hero_cta1">Telegram orqali bog'lanish</a>
+        <a class="btn ghost" href="#pricing" data-i18n="hero_cta2">Narxlarni ko'rish</a>
+      </div>
+      <div class="made-in" data-i18n="hero_made">🇺🇿 O'zbekistonda ishlab chiqilgan · O'zbek, Кирилл ва English tillarida</div>
+    </div>
+    <div class="mock fade">
+      <div class="mock-head">
+        <span class="mock-title">Copper Owner</span>
+        <span class="chip" data-i18n="mock_live">Jonli</span>
+      </div>
+      <div class="mock-rev">
+        <div class="lbl" data-i18n="mock_today">Bugun · Tushum</div>
+        <div class="val">4 850 000 so'm</div>
+      </div>
+      <div class="mock-row">
+        <div class="mock-cell"><div class="lbl" data-i18n="mock_orders">Buyurtmalar</div><div class="val">124</div></div>
+        <div class="mock-cell"><div class="lbl" data-i18n="mock_check">O'rtacha chek</div><div class="val">39 100</div></div>
+        <div class="mock-cell"><div class="lbl" data-i18n="mock_profit">Foyda</div><div class="val" style="color:var(--emerald)">1 940 000</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap stats-grid">
+    <div class="stat"><div class="n" data-i18n="stat1_n">1 kun</div><div class="t" data-i18n="stat1_t">o'rnatish va o'qitish</div></div>
+    <div class="stat"><div class="n">24/7</div><div class="t" data-i18n="stat2_t">real vaqtda sinxronlash</div></div>
+    <div class="stat"><div class="n" data-i18n="stat3_n">3 til</div><div class="t" data-i18n="stat3_t">O'zbek (lotin/kirill) va inglizcha</div></div>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-i18n="feat_h2">Restoran uchun kerak bo'lgan hamma narsa</h2>
+      <p data-i18n="feat_p">Kafe, restoran, bar va choyxonalar uchun — buyurtmadan hisobotgacha to'liq tizim.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat fade"><div class="ico">🧾</div><h3 data-i18n="f1_h">Buyurtma olish</h3><p data-i18n="f1_p">Planshetda kassa, telefonda ofitsiant ilovasi. Buyurtmalar zumda oshxonaga yetadi.</p></div>
+      <div class="feat fade"><div class="ico">🪑</div><h3 data-i18n="f2_h">Stollar va zal</h3><p data-i18n="f2_p">Zal xaritasi, stol hisoblari, stollarni ko'chirish va birlashtirish — bir teginishda.</p></div>
+      <div class="feat fade"><div class="ico">🖨️</div><h3 data-i18n="f3_h">Chek va oshxona pechati</h3><p data-i18n="f3_p">Mijoz cheklari va oshxona buyurtmalari tarmoq printerlarida avtomatik chop etiladi.</p></div>
+      <div class="feat fade"><div class="ico">🍽️</div><h3 data-i18n="f4_h">Menyu boshqaruvi</h3><p data-i18n="f4_p">Rasmlar, qo'shimchalar (modifikatorlar), kilogramm bilan sotish, chegirmalar va QR menyu.</p></div>
+      <div class="feat fade"><div class="ico">🤝</div><h3 data-i18n="f5_h">Nasiya daftari</h3><p data-i18n="f5_p">Doimiy mijozlarga nasiya yozing, to'lovlar tarixini kuzating — qog'oz daftar endi kerak emas.</p></div>
+      <div class="feat fade"><div class="ico">📊</div><h3 data-i18n="f6_h">Hisobotlar</h3><p data-i18n="f6_p">Tushum, foyda, eng ko'p sotilgan taomlar, soatlar bo'yicha savdo, xodimlar samaradorligi.</p></div>
+      <div class="feat fade"><div class="ico">📱</div><h3 data-i18n="f7_h">Egasi uchun ilova</h3><p data-i18n="f7_p">Copper Owner: restoran qayerda bo'lsangiz ham cho'ntagingizda — jonli tushum va foyda.</p></div>
+      <div class="feat fade"><div class="ico">📦</div><h3 data-i18n="f8_h">Zaxira nazorati</h3><p data-i18n="f8_p">Kunlik tayyor mahsulot zaxirasi va kam qolganda ogohlantirish — «tugab qoldi» degan noqulaylik yo'q.</p></div>
+      <div class="feat fade"><div class="ico">🔐</div><h3 data-i18n="f9_h">Xodimlar va smenalar</h3><p data-i18n="f9_p">Har bir xodimga PIN-kod va rol, smenalarni ochish-yopish, smena hisobotlari.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="apps" id="apps">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-i18n="apps_h2">Bitta tizim — ikkita ilova</h2>
+      <p data-i18n="apps_p">Jamoangiz uchun kassa, siz uchun boshqaruv paneli. Hammasi real vaqtda sinxron.</p>
+    </div>
+    <div class="apps-grid">
+      <div class="app-card fade">
+        <div class="tag">Copper POS</div>
+        <h3 data-i18n="app1_h">Jamoa uchun kassa</h3>
+        <p data-i18n="app1_p">Ofitsiant va kassirlar uchun asosiy ish quroli — planshet va telefonda.</p>
+        <ul>
+          <li data-i18n="app1_l1">Buyurtma olish va hisob-kitob</li>
+          <li data-i18n="app1_l2">Zal, stollar, band qilish (bron)</li>
+          <li data-i18n="app1_l3">Chek va oshxona pechati</li>
+          <li data-i18n="app1_l4">Nasiya, chegirma, qaytarish</li>
+        </ul>
+      </div>
+      <div class="app-card fade">
+        <div class="tag">Copper Owner</div>
+        <h3 data-i18n="app2_h">Egasi uchun boshqaruv</h3>
+        <p data-i18n="app2_p">Restoraningiz holatini istalgan joydan kuzating — telefoningizda.</p>
+        <ul>
+          <li data-i18n="app2_l1">Bugungi tushum — jonli</li>
+          <li data-i18n="app2_l2">Foyda va o'sish dinamikasi</li>
+          <li data-i18n="app2_l3">Eng foydali taomlar</li>
+          <li data-i18n="app2_l4">Xodimlar reytingi va nasiyalar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-i18n="price_h2">Oddiy va halol narxlar</h2>
+      <p data-i18n="price_p">Yashirin to'lovlar yo'q. Istalgan payt bekor qilish mumkin.</p>
+    </div>
+    <div class="toggle-row">
+      <span data-i18n="price_monthly">Oylik</span>
+      <button class="switch" id="annualSwitch" onclick="toggleAnnual()" aria-label="annual toggle"></button>
+      <span data-i18n="price_annual">Yillik</span>
+      <span class="save-chip" data-i18n="price_save">−20%</span>
+    </div>
+    <div class="price-grid">
+      <!-- TODO: final prices — placeholders based on market research -->
+      <div class="plan fade">
+        <h3>Start</h3>
+        <div class="price"><span class="amt" data-m="199 000" data-y="159 000">199 000</span> so'm</div>
+        <div class="per" data-i18n="per_month">/ oyiga</div>
+        <ul>
+          <li data-i18n="pl1_1">1 ta kassa (planshet)</li>
+          <li data-i18n="pl1_2">Menyu va stollar</li>
+          <li data-i18n="pl1_3">Chek va oshxona pechati</li>
+          <li data-i18n="pl1_4">Asosiy hisobotlar</li>
+          <li data-i18n="pl1_5">Telegram orqali yordam</li>
+        </ul>
+        <a class="btn ghost" href="#contact" data-i18n="plan_cta">Boshlash</a>
+      </div>
+      <div class="plan hot fade">
+        <div class="best" data-i18n="plan_best">Eng ommabop</div>
+        <h3>Pro</h3>
+        <div class="price"><span class="amt" data-m="349 000" data-y="279 000">349 000</span> so'm</div>
+        <div class="per" data-i18n="per_month">/ oyiga</div>
+        <ul>
+          <li data-i18n="pl2_1">Start'dagi hammasi</li>
+          <li data-i18n="pl2_2">Ofitsiant telefon ilovasi</li>
+          <li data-i18n="pl2_3">Copper Owner (egasi ilovasi)</li>
+          <li data-i18n="pl2_4">Nasiya daftari va QR menyu</li>
+          <li data-i18n="pl2_5">Zaxira nazorati va bron</li>
+          <li data-i18n="pl2_6">To'liq hisobotlar</li>
+        </ul>
+        <a class="btn" href="#contact" data-i18n="plan_cta2">14 kun bepul sinash</a>
+      </div>
+      <div class="plan fade">
+        <h3 data-i18n="pl3_h">Tarmoq</h3>
+        <div class="price" style="font-size:22px" data-i18n="pl3_price">Kelishilgan narx</div>
+        <div class="per" data-i18n="pl3_per">bir nechta filial uchun</div>
+        <ul>
+          <li data-i18n="pl3_1">Pro'dagi hammasi</li>
+          <li data-i18n="pl3_2">Bir nechta filial</li>
+          <li data-i18n="pl3_3">Shaxsiy menejer</li>
+          <li data-i18n="pl3_4">Maxsus imkoniyatlar</li>
+        </ul>
+        <a class="btn ghost" href="#contact" data-i18n="pl3_cta">Bog'lanish</a>
+      </div>
+    </div>
+    <p class="trial-note" data-i18n="trial_note">💳 Kartadan avtomatik pul yechilmaydi — sinov muddati tugagach o'zingiz qaror qilasiz.</p>
+  </div>
+</section>
+
+<section class="testi">
+  <div class="wrap">
+    <div class="quote fade">
+      <!-- TODO: replace with a real quote + venue name from the first restaurant -->
+      <p data-i18n="testi_q">«Ilgari buyurtmalar qog'ozda yozilardi, oxirida hisob-kitob bosh og'rig'i edi.
+      Copper bilan hamma narsa tartibda: oshxona chekni o'zi oladi, kunlik tushumni telefonimda ko'raman.»</p>
+      <div class="who" data-i18n="testi_who">— Restoran egasi, Toshkent</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-i18n="about_h2">Kim yaratgan?</h2>
+    </div>
+    <div class="founder-card fade">
+      <!-- TODO: replace initials avatar with a real photo -->
+      <div class="avatar">SK</div>
+      <div>
+        <h3>Sardor Kholmonov</h3>
+        <div class="role" data-i18n="about_role">Asoschisi va bosh direktor (CEO)</div>
+        <p data-i18n="about_p">Copper — O'zbekiston restoranlari uchun mahalliy jamoa tomonidan yaratilgan tizim.
+        Biz har bir mijoz bilan bevosita ishlaymiz: o'rnatamiz, o'rgatamiz va doim aloqada bo'lamiz.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-i18n="faq_h2">Ko'p so'raladigan savollar</h2>
+    </div>
+    <div class="faq-list">
+      <details class="fade"><summary data-i18n="q1">Internet kerakmi?</summary><p data-i18n="a1">Ha, tizim bulutli. Oddiy mobil internet (4G) ham bemalol yetadi — katta tezlik shart emas.</p></details>
+      <details class="fade"><summary data-i18n="q2">Qanday qurilma kerak?</summary><p data-i18n="a2">Har qanday Android planshet yoki telefon. Qimmat maxsus qurilma shart emas — bordagi planshetingiz ham ishlaydi.</p></details>
+      <details class="fade"><summary data-i18n="q3">O'rnatish qancha vaqt oladi?</summary><p data-i18n="a3">Odatda 1 kun: menyuni kiritamiz, printerlarni ulaymiz, jamoani o'rgatamiz. Ertasi kundan to'liq ishlaysiz.</p></details>
+      <details class="fade"><summary data-i18n="q4">Ma'lumotlarim xavfsizmi?</summary><p data-i18n="a4">Ma'lumotlar shifrlangan bulutda saqlanadi va faqat sizga ko'rinadi. Planshet yo'qolsa ham hech narsa yo'qolmaydi.</p></details>
+      <details class="fade"><summary data-i18n="q5">Qaysi printerlar mos keladi?</summary><p data-i18n="a5">Standart ESC/POS tarmoq (Ethernet/Wi-Fi) chek printerlari. Qaysi modelni olishni maslahat beramiz.</p></details>
+      <details class="fade"><summary data-i18n="q6">Shartnoma majburiyati bormi?</summary><p data-i18n="a6">Yo'q. To'lov oylik, istalgan payt to'xtatishingiz mumkin. Ma'lumotlaringizni eksport qilib beramiz.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact fade">
+      <h2 data-i18n="c_h2">Restoraningizni bugun raqamlashtiring</h2>
+      <p data-i18n="c_p">Yozing — bir kunda o'rnatamiz, 14 kun bepul sinaysiz.</p>
+      <!-- TODO: replace with real Telegram username -->
+      <a class="btn" href="https://t.me/copperpos_uz" target="_blank" data-i18n="c_cta">Telegram'da yozish</a>
+      <div class="alt">
+        <!-- TODO: replace with real phone number -->
+        <span data-i18n="c_or">yoki qo'ng'iroq qiling:</span>
+        <a class="plain" href="tel:+998901234567">+998 90 123-45-67</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Copper. <span data-i18n="foot_rights">Barcha huquqlar himoyalangan.</span></span>
+    <span><a href="https://t.me/copperpos" style="color:var(--grey)">Telegram</a></span>
+  </div>
+</footer>
+
+<script>
+// ── Language toggle (uz default; EN dictionary) ──────────────────
+const EN = {
+  nav_features: "Features", nav_apps: "Apps", nav_pricing: "Pricing",
+  nav_faq: "FAQ", nav_contact: "Contact", nav_cta: "Get a demo",
+  hero_h1: "The <em>smart POS</em> for your restaurant",
+  hero_p: "Orders, tables, kitchen, reports and profit — all in one system. Runs on ordinary Android tablets and phones. Set up in one day.",
+  hero_cta1: "Message us on Telegram", hero_cta2: "See pricing",
+  hero_made: "🇺🇿 Built in Uzbekistan · Uzbek (Latin/Cyrillic) and English",
+  mock_live: "Live", mock_today: "Today · Revenue", mock_orders: "Orders",
+  mock_check: "Avg check", mock_profit: "Profit",
+  stat1_n: "1 day", stat1_t: "setup and training",
+  stat2_t: "real-time sync", stat3_n: "3 languages", stat3_t: "Uzbek (Latin/Cyrillic) and English",
+  feat_h2: "Everything a restaurant needs",
+  feat_p: "For cafes, restaurants, bars and teahouses — a complete system from order to report.",
+  f1_h: "Order taking", f1_p: "POS on a tablet, waiter app on a phone. Orders reach the kitchen instantly.",
+  f2_h: "Tables & floor", f2_p: "Floor map, table bills, move and merge tables — in one tap.",
+  f3_h: "Receipt & kitchen printing", f3_p: "Customer receipts and kitchen tickets print automatically on network printers.",
+  f4_h: "Menu management", f4_p: "Photos, modifiers, sell-by-weight, discounts and a QR menu.",
+  f5_h: "Debt book (Nasiya)", f5_p: "Record regulars' pay-later tabs and track payment history — no more paper notebook.",
+  f6_h: "Reports", f6_p: "Revenue, profit, best-selling dishes, sales by hour, staff performance.",
+  f7_h: "Owner app", f7_p: "Copper Owner: your restaurant in your pocket wherever you are — live revenue and profit.",
+  f8_h: "Stock control", f8_p: "Daily prepared-item stock with low-stock alerts — no more \"we ran out\" surprises.",
+  f9_h: "Staff & shifts", f9_p: "PIN and role for every employee, shift open/close, shift reports.",
+  apps_h2: "One system — two apps",
+  apps_p: "A POS for your team, a dashboard for you. Everything syncs in real time.",
+  app1_h: "POS for the team", app1_p: "The main work tool for waiters and cashiers — on tablets and phones.",
+  app1_l1: "Order taking and checkout", app1_l2: "Floor, tables, reservations",
+  app1_l3: "Receipt and kitchen printing", app1_l4: "Pay-later, discounts, refunds",
+  app2_h: "Management for the owner", app2_p: "Watch your restaurant from anywhere — on your phone.",
+  app2_l1: "Today's revenue — live", app2_l2: "Profit and growth trends",
+  app2_l3: "Most profitable dishes", app2_l4: "Staff ranking and debts",
+  price_h2: "Simple, honest pricing", price_p: "No hidden fees. Cancel anytime.",
+  price_monthly: "Monthly", price_annual: "Annual", price_save: "−20%",
+  per_month: "/ per month",
+  pl1_1: "1 register (tablet)", pl1_2: "Menu and tables", pl1_3: "Receipt & kitchen printing",
+  pl1_4: "Core reports", pl1_5: "Support via Telegram",
+  plan_cta: "Get started", plan_best: "Most popular",
+  pl2_1: "Everything in Start", pl2_2: "Waiter phone app", pl2_3: "Copper Owner (owner app)",
+  pl2_4: "Debt book and QR menu", pl2_5: "Stock control and reservations", pl2_6: "Full reports",
+  plan_cta2: "Try 14 days free",
+  pl3_h: "Chain", pl3_price: "Custom pricing", pl3_per: "for multiple locations",
+  pl3_1: "Everything in Pro", pl3_2: "Multiple locations", pl3_3: "Dedicated manager", pl3_4: "Custom features",
+  pl3_cta: "Contact us",
+  trial_note: "💳 No automatic card charges — when the trial ends, you decide.",
+  testi_q: "“Orders used to be written on paper, and end-of-day settlement was a headache. With Copper everything is in order: the kitchen gets its ticket automatically, and I see the day's revenue on my phone.”",
+  testi_who: "— Restaurant owner, Tashkent",
+  about_h2: "Who built it?",
+  about_role: "Founder & CEO",
+  about_p: "Copper is built for Uzbekistan's restaurants by a local team. We work with every customer directly: we install, train, and stay in touch.",
+  faq_h2: "Frequently asked questions",
+  q1: "Do I need internet?", a1: "Yes, the system is cloud-based. Ordinary mobile internet (4G) is plenty — no high speed required.",
+  q2: "What hardware do I need?", a2: "Any Android tablet or phone. No expensive special hardware — the tablet you already have will work.",
+  q3: "How long does setup take?", a3: "Usually 1 day: we enter your menu, connect printers, and train the team. You're fully running the next day.",
+  q4: "Is my data safe?", a4: "Data is stored encrypted in the cloud and visible only to you. Even if a tablet is lost, nothing is lost.",
+  q5: "Which printers work?", a5: "Standard ESC/POS network (Ethernet/Wi-Fi) receipt printers. We'll advise which model to buy.",
+  q6: "Is there a contract lock-in?", a6: "No. Billing is monthly and you can stop anytime. We'll export your data for you.",
+  c_h2: "Digitize your restaurant today",
+  c_p: "Message us — we set up in one day, and you try it free for 14 days.",
+  c_cta: "Message on Telegram", c_or: "or call:",
+  foot_rights: "All rights reserved."
+};
+
+let lang = "uz";
+const uzStore = {};
+document.querySelectorAll("[data-i18n]").forEach(el => {
+  uzStore[el.getAttribute("data-i18n")] = el.textContent;
+});
+document.querySelectorAll("[data-i18n-html]").forEach(el => {
+  uzStore[el.getAttribute("data-i18n-html")] = el.innerHTML;
+});
+
+function toggleLang() {
+  lang = lang === "uz" ? "en" : "uz";
+  document.documentElement.lang = lang;
+  document.getElementById("langBtn").textContent = lang === "uz" ? "EN" : "UZ";
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.getAttribute("data-i18n");
+    el.textContent = lang === "en" ? (EN[k] ?? uzStore[k]) : uzStore[k];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    const k = el.getAttribute("data-i18n-html");
+    el.innerHTML = lang === "en" ? (EN[k] ?? uzStore[k]) : uzStore[k];
+  });
+}
+
+// ── Annual/monthly pricing toggle ────────────────────────────────
+let annual = false;
+function toggleAnnual() {
+  annual = !annual;
+  document.getElementById("annualSwitch").classList.toggle("on", annual);
+  document.querySelectorAll(".amt").forEach(el => {
+    el.textContent = annual ? el.dataset.y : el.dataset.m;
+  });
+}
+
+// ── Fade-in on scroll ────────────────────────────────────────────
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("vis"); io.unobserve(e.target); } });
+}, { threshold: .12 });
+document.querySelectorAll(".fade").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
