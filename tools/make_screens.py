@@ -17,6 +17,9 @@ JOBS = [
     ("waiter-menu.jpg", "app-menu.jpg", "phone", None),
     ("tablet-tables.jpg", "app-tables.jpg", "tablet", (0, 30, 1280, 753)),
     ("tablet-reports.jpg", "app-reports.jpg", "tablet", (0, 30, 1280, 753)),
+    ("tablet-top-items.jpg", "app-top-items.jpg", "tablet", (0, 30, 1280, 753)),
+    # made by tools/clean_menu_shot.py (the two '0 so'm' rows removed)
+    ("tablet-menu-clean.jpg", "app-menu-tablet.jpg", "tablet", (0, 30, 1280, 753)),
 ]
 DEVICE = {  # screen width, bezel, top offset (None = centre), corner radius, card height
     "phone": (520, 16, 92, 64, 900),
