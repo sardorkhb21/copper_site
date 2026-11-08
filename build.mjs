@@ -96,7 +96,7 @@ function headFor(lang) {
         logo: `${SITE}/icon-512.png`, areaServed: "UZ",
         founder: { "@type": "Person", name: "Sardor Kholmonov" },
         sameAs: ["https://t.me/copperpos", "https://play.google.com/store/apps/details?id=uz.copper.pos"],
-        contactPoint: { "@type": "ContactPoint", contactType: "sales", url: "https://t.me/copperpos", availableLanguage: ["uz", "ru", "en"] },
+        contactPoint: { "@type": "ContactPoint", contactType: "sales", telephone: "+998949982100", url: "https://t.me/copperpos", areaServed: "UZ", availableLanguage: ["uz", "ru", "en"] },
       },
       { "@type": "WebSite", "@id": `${SITE}/#website`, url: `${SITE}/`, name: "Copper POS", publisher: { "@id": `${SITE}/#org` }, inLanguage: ["uz", "ru", "en"] },
       {
