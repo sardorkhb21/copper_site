@@ -166,6 +166,7 @@
   .qr-list li { display:flex; gap:12px; align-items:flex-start; font-size:15px; }
   .qr-list .tick { flex:none; width:24px; height:24px; border-radius:8px; background:var(--accent-weak); color:var(--accent); display:grid; place-items:center; font-weight:800; font-size:13px; margin-top:1px; }
   .qr-visual { display:grid; place-items:center; }
+  .qr-shot { width:min(480px,100%); height:auto; display:block; }
   .qr-phone {
     width:min(280px,80%); aspect-ratio:9/17.5; background:var(--surface); border:1px solid var(--line);
     border-radius:34px; box-shadow:var(--shadow-lg); padding:16px; position:relative;
@@ -674,14 +675,7 @@
       </ul>
     </div>
     <div class="qr-visual reveal">
-      <div class="qr-phone">
-        <div class="notch"></div>
-        <div class="code"></div>
-        <div class="qr-item"><div class="thumb"></div><div class="nm"></div><div class="pr"></div></div>
-        <div class="qr-item"><div class="thumb"></div><div class="nm"></div><div class="pr"></div></div>
-        <div class="qr-item"><div class="thumb"></div><div class="nm"></div><div class="pr"></div></div>
-        <div class="qr-cta-mini" data-i18n="qr_order">Buyurtma berish</div>
-      </div>
+      <img class="qr-shot" src="images/qr-visual.webp" alt="Mijoz telefonida QR menyu" data-i18n-alt="qr_alt" width="1000" height="1120" loading="lazy">
     </div>
   </div>
 </section>
@@ -881,7 +875,7 @@ const I18N = {
     qr_tag:"Yangi", qr_h2:"QR orqali onlayn buyurtma",
     qr_p:"Mijozlar stol ustidagi QR kodni skanerlaydi, rasmli menyuni ko'radi va o'zi buyurtma beradi — buyurtma to'g'ridan-to'g'ri POS va oshxonaga tushadi.",
     qr_l1:"Stol QR kodi — mijozga ilova o'rnatish shart emas", qr_l2:"Buyurtma zumda POS va oshxonaga tushadi",
-    qr_l3:"Rasmli menyu, kombolar va modifikatorlar", qr_l4:"To'lov kassada — soddadan boshlang", qr_order:"Buyurtma berish",
+    qr_l3:"Rasmli menyu, kombolar va modifikatorlar", qr_l4:"To'lov kassada — soddadan boshlang", qr_order:"Buyurtma berish", qr_alt:"Mijoz telefonida QR menyu",
     trusted_label:"Ishonch bildirishgan", qr_notif_t:"Yangi QR buyurtma", qr_notif_s:"Stol 4 · 2 taom",
     showcase_eyebrow:"Interfeys", showcase_h2:"Ko'z bilan ko'ring", showcase_p:"Sodda, tez va tushunarli — jamoangiz bir kunda o'rganadi.",
     mock_order:"Stol 4 · Buyurtma", mock_total:"Jami", mock_send:"Oshxonaga yuborish", mock_pay:"To'lash",
@@ -969,7 +963,7 @@ const I18N = {
     qr_tag:"Новое", qr_h2:"Онлайн-заказы по QR",
     qr_p:"Гость сканирует QR-код на столе, видит меню с фото и заказывает сам — заказ сразу попадает в POS и на кухню.",
     qr_l1:"QR на столе — гостю не нужно устанавливать приложение", qr_l2:"Заказ мгновенно в POS и на кухню",
-    qr_l3:"Меню с фото, комбо и модификаторами", qr_l4:"Оплата на кассе — просто начать", qr_order:"Заказать",
+    qr_l3:"Меню с фото, комбо и модификаторами", qr_l4:"Оплата на кассе — просто начать", qr_order:"Заказать", qr_alt:"QR-меню на телефоне гостя",
     trusted_label:"Нам доверяют", qr_notif_t:"Новый QR-заказ", qr_notif_s:"Стол 4 · 2 блюда",
     showcase_eyebrow:"Интерфейс", showcase_h2:"Посмотрите в действии", showcase_p:"Просто, быстро и понятно — команда освоит за один день.",
     mock_order:"Стол 4 · Заказ", mock_total:"Итого", mock_send:"Отправить на кухню", mock_pay:"Оплатить",
@@ -1057,7 +1051,7 @@ const I18N = {
     qr_tag:"New", qr_h2:"QR online ordering",
     qr_p:"Guests scan the QR code on the table, browse the photo menu and order themselves — the order lands straight in the POS and the kitchen.",
     qr_l1:"Table QR — no app to install for the guest", qr_l2:"Orders reach POS & kitchen instantly",
-    qr_l3:"Photo menu, combos & modifiers", qr_l4:"Pay at the counter — simple to start", qr_order:"Place order",
+    qr_l3:"Photo menu, combos & modifiers", qr_l4:"Pay at the counter — simple to start", qr_order:"Place order", qr_alt:"QR menu on a guest's phone",
     trusted_label:"Trusted by", qr_notif_t:"New QR order", qr_notif_s:"Table 4 · 2 items",
     showcase_eyebrow:"The product", showcase_h2:"See it in action", showcase_p:"Simple, fast and clear — your team learns it in a day.",
     mock_order:"Table 4 · Order", mock_total:"Total", mock_send:"Send to kitchen", mock_pay:"Pay",
