@@ -180,6 +180,10 @@ applyLang(PAGE_LANG);`);
   html = html.replace(/<img src="\/images\/type-(\w+)\.jpg" alt=""/g, (m, k) =>
     `<img src="/images/type-${k}.jpg" alt="${attr(d[`type_${k}`] ?? "")}" width="800" height="1100"`);
 
+  // App screenshots: alt text from the dictionary (data-i18n-alt="key").
+  html = html.replace(/alt="[^"]*" data-i18n-alt="([^"]+)"/g, (m, k) =>
+    d[k] == null ? m : `alt="${attr(d[k])}" data-i18n-alt="${k}"`);
+
   const { html: out, changed } = translate(html, d);
   return { html: out, changed };
 }
