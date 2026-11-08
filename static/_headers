@@ -1,0 +1,15 @@
+# Cloudflare Pages response headers.
+
+# Photos and icons rarely change — let browsers keep them for a week.
+/images/*
+  Cache-Control: public, max-age=604800
+/*.png
+  Cache-Control: public, max-age=604800
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+# The *.pages.dev copies must never compete with copperpos.uz in search.
+https://copper-site.pages.dev/*
+  X-Robots-Tag: noindex
+https://:version.copper-site.pages.dev/*
+  X-Robots-Tag: noindex
