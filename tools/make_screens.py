@@ -2,19 +2,32 @@
 
     python3 tools/make_screens.py      (safe to re-run: reads screens/, writes images/)
 
-Each output is a 1200x900 card — the shape of the .fr-media slot — with the
-phone rising from the bottom edge, so only the top ~80% of the screen shows.
+Each output is a 1200-wide card (900 tall for phones, 760 for tablets) — the shape of the .fr-media slot — holding
+the screenshot inside a phone or tablet frame (see JOBS / DEVICE below).
 """
 import os
 from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-JOBS = [("waiter-tables.jpg", "app-tables.jpg"), ("waiter-menu.jpg", "app-menu.jpg")]
-W, H = 1200, 900
-SCREEN_W, BEZEL, TOP, R = 520, 16, 92, 64
+W = 1200
+# (source, output, device, crop box or None)
+#   phone : rises from the bottom edge, only the top ~80% of the screen shows
+#   tablet: whole screen, centred; Android status + navigation bars cropped off
+JOBS = [
+    ("waiter-menu.jpg", "app-menu.jpg", "phone", None),
+    ("tablet-tables.jpg", "app-tables.jpg", "tablet", (0, 30, 1280, 753)),
+    ("tablet-reports.jpg", "app-reports.jpg", "tablet", (0, 30, 1280, 753)),
+]
+DEVICE = {  # screen width, bezel, top offset (None = centre), corner radius, card height
+    "phone": (520, 16, 92, 64, 900),
+    "tablet": (1124, 22, None, 26, 760),
+}
 
-for src, out in JOBS:
+for src, out, kind, crop in JOBS:
+    SCREEN_W, BEZEL, TOP, R, H = DEVICE[kind]
     shot = Image.open(os.path.join(ROOT, "screens", src)).convert("RGB")
+    if crop:
+        shot = shot.crop(crop)
     sh = round(shot.height * SCREEN_W / shot.width)
     shot = shot.resize((SCREEN_W, sh), Image.LANCZOS)
 
@@ -27,6 +40,8 @@ for src, out in JOBS:
 
     pw, ph = SCREEN_W + 2 * BEZEL, sh + 2 * BEZEL
     x0 = (W - pw) // 2
+    if TOP is None:
+        TOP = (H - ph) // 2 - 8
     # shadow
     shadow = Image.new("L", (W, H + ph), 0)
     ImageDraw.Draw(shadow).rounded_rectangle((x0, TOP + 24, x0 + pw, TOP + 24 + ph), R + BEZEL, fill=70)

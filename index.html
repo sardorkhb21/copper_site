@@ -568,11 +568,11 @@
 </section>
 
 <!-- ─────────────── Feature rows (app screenshots) ─────────────── -->
-<!-- Screenshots: raw phone shots live in screens/, framed by tools/make_screens.py. TODO: the Owner-app row (fr2) still needs one. -->
+<!-- Screenshots: raw shots live in screens/, framed by tools/make_screens.py. -->
 <section id="closer">
   <div class="wrap">
     <div class="frow reveal">
-      <div class="fr-media"><img src="images/app-tables.jpg" alt="Zal ekrani" data-i18n-alt="fr1_cap" width="1200" height="900" loading="lazy"></div>
+      <div class="fr-media"><img src="images/app-tables.jpg" alt="Zal ekrani" data-i18n-alt="fr1_cap" width="1200" height="760" loading="lazy"></div>
       <div class="fr-text">
         <span class="eyebrow" data-i18n="fr_eyebrow">Yaqindan</span>
         <h3 data-i18n="fr1_h">Butun zal — bitta ekranda</h3>
@@ -585,7 +585,7 @@
       </div>
     </div>
     <div class="frow alt reveal">
-      <div class="fr-media"><div class="fr-ph"><div class="ic">📱</div><div class="t" data-i18n="fr2_cap">Egasi ilovasi</div></div></div>
+      <div class="fr-media"><img src="images/app-reports.jpg" alt="Hisobotlar ekrani" data-i18n-alt="fr2_alt" width="1200" height="760" loading="lazy"></div>
       <div class="fr-text">
         <span class="eyebrow" data-i18n="fr_eyebrow">Yaqindan</span>
         <h3 data-i18n="fr2_h">Foyda cho'ntagingizda</h3>
@@ -867,7 +867,7 @@ const I18N = {
     how3_h:"Sotishni boshlaysiz", how3_p:"Ertasi kundan to'liq ishlaysiz — biz aloqada bo'lamiz.",
     fr_eyebrow:"Yaqindan",
     fr1_h:"Butun zal — bitta ekranda", fr1_p:"Stollar, buyurtmalar va to'lovlar real vaqtda sinxron.", fr1_l1:"Zal xaritasi va zonalar", fr1_l2:"Stollarni ko'chirish va birlashtirish", fr1_l3:"Split va aralash to'lov", fr1_cap:"Zal ekrani",
-    fr2_h:"Foyda cho'ntagingizda", fr2_p:"Copper Owner bilan restoranni istalgan joydan kuzating.", fr2_l1:"Jonli tushum va foyda", fr2_l2:"Eng ko'p sotilgan taomlar", fr2_l3:"Xodimlar samaradorligi", fr2_cap:"Egasi ilovasi",
+    fr2_h:"Foyda cho'ntagingizda", fr2_p:"Copper Owner bilan restoranni istalgan joydan kuzating.", fr2_l1:"Jonli tushum va foyda", fr2_l2:"Eng ko'p sotilgan taomlar", fr2_l3:"Xodimlar samaradorligi", fr2_cap:"Egasi ilovasi", fr2_alt:"Hisobotlar ekrani",
     fr3_h:"Menyu va zaxira nazoratda", fr3_p:"Rasmlar, modifikatorlar va kunlik zaxira — barchasi qo'lingizda.", fr3_l1:"Rasmli menyu va modifikatorlar", fr3_l2:"Kilogramm bilan sotish", fr3_l3:"Kunlik zaxira va '86' ogohlantirish", fr3_cap:"Menyu ekrani",
     why_eyebrow:"Nega Copper", why_h2:"Nega aynan Copper?", why_p:"Qimmat tizimlar va qog'oz daftar bilan solishtiring.", col_others:"Boshqalar",
     w1_l:"Oylik narx", w1_a:"$59–130", w1_b:"299 000 so'mdan", w2_l:"Qurilma", w2_a:"Maxsus, qimmat", w2_b:"Oddiy Android",
@@ -943,7 +943,7 @@ const I18N = {
     how3_h:"Начинаете продавать", how3_p:"Со следующего дня работаете полностью — мы на связи.",
     fr_eyebrow:"Ближе",
     fr1_h:"Весь зал — на одном экране", fr1_p:"Столы, заказы и оплаты синхронны в реальном времени.", fr1_l1:"Карта зала и зоны", fr1_l2:"Перенос и объединение столов", fr1_l3:"Разделение и смешанная оплата", fr1_cap:"Экран зала",
-    fr2_h:"Прибыль в кармане", fr2_p:"С Copper Owner следите за рестораном откуда угодно.", fr2_l1:"Живая выручка и прибыль", fr2_l2:"Самые продаваемые блюда", fr2_l3:"Эффективность сотрудников", fr2_cap:"Приложение владельца",
+    fr2_h:"Прибыль в кармане", fr2_p:"С Copper Owner следите за рестораном откуда угодно.", fr2_l1:"Живая выручка и прибыль", fr2_l2:"Самые продаваемые блюда", fr2_l3:"Эффективность сотрудников", fr2_cap:"Приложение владельца", fr2_alt:"Экран отчётов",
     fr3_h:"Меню и запасы под контролем", fr3_p:"Фото, модификаторы и ежедневные остатки — всё под рукой.", fr3_l1:"Меню с фото и модификаторы", fr3_l2:"Продажа на вес", fr3_l3:"Остатки и стоп-лист", fr3_cap:"Экран меню",
     why_eyebrow:"Почему Copper", why_h2:"Почему именно Copper?", why_p:"Сравните с дорогими системами и бумажной тетрадью.", col_others:"Другие",
     w1_l:"Цена в месяц", w1_a:"$59–130", w1_b:"от 299 000 сум", w2_l:"Оборудование", w2_a:"Специальное, дорогое", w2_b:"Обычный Android",
@@ -1019,7 +1019,7 @@ const I18N = {
     how3_h:"You start selling", how3_p:"Fully running the next day — we stay in touch.",
     fr_eyebrow:"A closer look",
     fr1_h:"Your whole floor on one screen", fr1_p:"Tables, orders and payments sync in real time.", fr1_l1:"Floor map & zones", fr1_l2:"Move & merge tables", fr1_l3:"Split & mixed payment", fr1_cap:"Floor screen",
-    fr2_h:"Profit in your pocket", fr2_p:"With Copper Owner, watch your restaurant from anywhere.", fr2_l1:"Live revenue & profit", fr2_l2:"Best-selling dishes", fr2_l3:"Staff performance", fr2_cap:"Owner app",
+    fr2_h:"Profit in your pocket", fr2_p:"With Copper Owner, watch your restaurant from anywhere.", fr2_l1:"Live revenue & profit", fr2_l2:"Best-selling dishes", fr2_l3:"Staff performance", fr2_cap:"Owner app", fr2_alt:"Reports screen",
     fr3_h:"Menu & stock under control", fr3_p:"Photos, modifiers and daily stock — all at hand.", fr3_l1:"Photo menu & modifiers", fr3_l2:"Sell by weight", fr3_l3:"Daily stock & '86' alerts", fr3_cap:"Menu screen",
     why_eyebrow:"Why Copper", why_h2:"Why choose Copper?", why_p:"Compare it to expensive systems and the paper notebook.", col_others:"Others",
     w1_l:"Monthly price", w1_a:"$59–130", w1_b:"from 299,000 so'm", w2_l:"Hardware", w2_a:"Special, expensive", w2_b:"Any Android",
